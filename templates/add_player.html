@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2>Add Player</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="nickname">Nickname:</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" required>
+        </div>
+        <div class="form-group">
+            <label for="main_game">Main Game:</label>
+            <input type="text" class="form-control" id="main_game" name="main_game" required>
+        </div>
+        <div class="form-group">
+            <label for="nationality_id">Nationality ID:</label>
+            <input type="number" class="form-control" id="nationality_id" name="nationality_id" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" class="form-control" id="age" name="age" required>
+        </div>
+        <div class="form-group">
+            <label for="team_id">Team ID:</label>
+            <input type="number" class="form-control" id="team_id" name="team_id" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="text" class="form-control" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+            <label for="market_value">Market Value:</label>
+            <input type="number" class="form-control" id="market_value" name="market_value">
+        </div>
+        <button type="submit" class="btn btn-success">Add</button>
+    </form>
+</div>
+{% endblock %}

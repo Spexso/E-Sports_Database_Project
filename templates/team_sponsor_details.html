@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2>Team Sponsor Details</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Team ID</th>
+                <th>Team Name</th>
+                <th>Manager Name</th>
+                <th>Sponsor Name</th>
+                <th>Sponsor Email</th>
+                <th>Sponsor Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in team_sponsor_details %}
+            <tr>
+                <td>{{ detail.TeamID }}</td>
+                <td>{{ detail.TeamName }}</td>
+                <td>{{ detail.ManagerName }}</td>
+                <td>{{ detail.SponsorName }}</td>
+                <td>{{ detail.SponsorEmail }}</td>
+                <td>{{ detail.SponsorPhone }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

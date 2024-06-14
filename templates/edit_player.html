@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2>Edit Player</h2>
+    <form method="post">
+        <div class="form-group">
+            <label for="nickname">Nickname:</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" value="{{ player.Nickname }}" required>
+        </div>
+        <div class="form-group">
+            <label for="main_game">Main Game:</label>
+            <input type="text" class="form-control" id="main_game" name="main_game" value="{{ player.MainGame }}" required>
+        </div>
+        <div class="form-group">
+            <label for="nationality_id">Nationality ID:</label>
+            <input type="number" class="form-control" id="nationality_id" name="nationality_id" value="{{ player.NationalityID }}" required>
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" class="form-control" id="age" name="age" value="{{ player.Age }}" required>
+        </div>
+        <div class="form-group">
+            <label for="team_id">Team ID:</label>
+            <input type="number" class="form-control" id="team_id" name="team_id" value="{{ player.TeamID }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ player.Email }}">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="text" class="form-control" id="phone" name="phone" value="{{ player.Phone }}">
+        </div>
+        <div class="form-group">
+            <label for="market_value">Market Value:</label>
+            <input type="number" class="form-control" id="market_value" name="market_value" value="{{ player.MarketValue }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+{% endblock %}

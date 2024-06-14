@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2 style="color: #007bff;">Player Details</h2>
+    <table class="table table-striped">
+        <thead style="background-color: #343a40; color: #ffffff;">
+            <tr>
+                <th>ID</th>
+                <th>Nickname</th>
+                <th>Main Game</th>
+                <th>Nationality</th>
+                <th>Country</th>
+                <th>Team Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Market Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in player_details %}
+            <tr>
+                <td>{{ player.PlayerID }}</td>
+                <td>{{ player.Nickname }}</td>
+                <td>{{ player.MainGame }}</td>
+                <td>{{ player.Nationality }}</td>
+                <td>{{ player.Country }}</td>
+                <td>{{ player.TeamName }}</td>
+                <td>{{ player.Age }}</td>
+                <td>{{ player.Email }}</td>
+                <td>{{ player.Phone }}</td>
+                <td>{{ player.MarketValue }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

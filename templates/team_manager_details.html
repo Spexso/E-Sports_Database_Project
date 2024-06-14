@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2 class="text-primary">Team and Manager Details</h2>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Team ID</th>
+                <th>Team Name</th>
+                <th>Manager ID</th>
+                <th>Manager Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detail in team_manager_details %}
+            <tr>
+                <td>{{ detail.TeamID }}</td>
+                <td>{{ detail.TeamName }}</td>
+                <td>{{ detail.ManagerID }}</td>
+                <td>{{ detail.ManagerName }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
