@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from model import Base, Manager, Sponsor, Game, Team, Nationality, Player, Caster, Venue, Tournament, TeamOwner, Build, Streamer, Match, Schedule, SponsorshipDeal, PlayerStatistics, TeamStatistics, Event, PlayerTransfer
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'
+
 
 # Configure the database connection
 engine = create_engine('mssql+pyodbc://.\sqlexpress/ESportsDB?driver=ODBC+Driver+17+for+SQL+Server&Trusted_Connection=yes')
@@ -94,11 +96,74 @@ def add_tournament():
         sponsor_id = request.form['sponsor_id']
         start_date = request.form['start_date']
         end_date = request.form['end_date']
-        new_tournament = Tournament(TournamentName=tournament_name, VenueID=venue_id, PrizePool=prize_pool, SponsorID=sponsor_id, StartDate=start_date, EndDate=end_date)
-        session.add(new_tournament)
-        session.commit()
+        team1_id = request.form['team1_id']
+        team2_id = request.form['team2_id']
+        match_date = request.form['match_date']
+
+        try:
+            # Start a new transaction
+            with engine.begin() as connection:
+                # Insert the new tournament
+                result = connection.execute(text("""
+                    BEGIN TRANSACTION;
+                    BEGIN TRY
+                        -- Create the new tournament
+                        INSERT INTO Tournament (TournamentName, VenueID, PrizePool, SponsorID, StartDate, EndDate)
+                        VALUES (:tournament_name, :venue_id, :prize_pool, :sponsor_id, :start_date, :end_date);
+
+                        DECLARE @NewTournamentID INT;
+                        SET @NewTournamentID = SCOPE_IDENTITY();
+
+                        -- Schedule the initial match for the new tournament
+                        INSERT INTO Match (TournamentID, Team1ID, Team2ID, MatchDate, WinnerTeamID)
+                        VALUES (@NewTournamentID, :team1_id, :team2_id, :match_date, NULL);
+
+                        -- Commit the transaction if both operations succeed
+                        COMMIT TRANSACTION;
+                    END TRY
+                    BEGIN CATCH
+                        -- Rollback the transaction if any operation fails
+                        ROLLBACK TRANSACTION;
+                        -- Optionally throw the error
+                        THROW;
+                    END CATCH;
+                """), {
+                    'tournament_name': tournament_name,
+                    'venue_id': venue_id,
+                    'prize_pool': prize_pool,
+                    'sponsor_id': sponsor_id,
+                    'start_date': start_date,
+                    'end_date': end_date,
+                    'team1_id': team1_id,
+                    'team2_id': team2_id,
+                    'match_date': match_date
+                })
+
+            flash('Tournament and initial match successfully added.', 'success')
+        except Exception as e:
+            flash(f'Error adding tournament: {e}', 'danger')
+
         return redirect(url_for('index'))
+
     return render_template('add_tournament.html')
+
+@app.route('/matches')
+def matches():
+    matches = session.execute(text("""
+        SELECT 
+            m.MatchID,
+            t1.TeamName AS Team1,
+            t2.TeamName AS Team2,
+            m.MatchDate,
+            m.WinnerTeamID,
+            w.TeamName AS WinnerTeam
+        FROM 
+            Match m
+        LEFT JOIN Team t1 ON m.Team1ID = t1.TeamID
+        LEFT JOIN Team t2 ON m.Team2ID = t2.TeamID
+        LEFT JOIN Team w ON m.WinnerTeamID = w.TeamID
+    """)).fetchall()
+    return render_template('matches.html', matches=matches)
 
 @app.route('/player_details')
 def player_details():

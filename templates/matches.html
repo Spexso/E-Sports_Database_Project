@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2 class="header-text">Matches</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Match ID</th>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Match Date</th>
+                <th>Winner</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches %}
+            <tr>
+                <td>{{ match.MatchID }}</td>
+                <td>{{ match.Team1 }}</td>
+                <td>{{ match.Team2 }}</td>
+                <td>{{ match.MatchDate }}</td>
+                <td>{{ match.WinnerTeam }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

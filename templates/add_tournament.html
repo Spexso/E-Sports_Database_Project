@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="mt-4">
-    <h2>Add Tournament</h2>
+    <h2 class="header-text">Add Tournament</h2>
     <form method="post">
         <div class="form-group">
             <label for="tournament_name">Tournament Name:</label>
@@ -27,7 +27,19 @@
             <label for="end_date">End Date:</label>
             <input type="date" class="form-control" id="end_date" name="end_date" required>
         </div>
-        <button type="submit" class="btn btn-success">Add</button>
+        <div class="form-group">
+            <label for="team1_id">Team 1 ID:</label>
+            <input type="number" class="form-control" id="team1_id" name="team1_id" required>
+        </div>
+        <div class="form-group">
+            <label for="team2_id">Team 2 ID:</label>
+            <input type="number" class="form-control" id="team2_id" name="team2_id" required>
+        </div>
+        <div class="form-group">
+            <label for="match_date">Match Date:</label>
+            <input type="date" class="form-control" id="match_date" name="match_date" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Tournament</button>
     </form>
 </div>
 {% endblock %}
