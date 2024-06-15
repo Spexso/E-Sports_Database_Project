@@ -141,12 +141,24 @@ def edit_team(id):
         return redirect(url_for('index'))
     return render_template('edit_team.html', team=team)
 
-@app.route('/delete_team/<int:id>')
-def delete_team(id):
-    team = session.query(Team).get(id)
-    session.delete(team)
-    session.commit()
-    return redirect(url_for('index'))
+@app.route('/player_transfer_list')
+def player_transfer_list():
+    player_transfers = session.execute(text("""
+        SELECT 
+            pt.TransferID,
+            p.Nickname AS PlayerName,
+            t1.TeamName AS FromTeam,
+            t2.TeamName AS ToTeam,
+            pt.TransferDate,
+            pt.TransferFee
+        FROM 
+            PlayerTransfer pt
+        JOIN Player p ON pt.PlayerID = p.PlayerID
+        LEFT JOIN Team t1 ON pt.FromTeamID = t1.TeamID
+        LEFT JOIN Team t2 ON pt.ToTeamID = t2.TeamID
+    """)).fetchall()
+    return render_template('player_transfer_list.html', player_transfers=player_transfers)
+
 
 @app.route('/edit_player/<int:id>', methods=['GET', 'POST'])
 def edit_player(id):

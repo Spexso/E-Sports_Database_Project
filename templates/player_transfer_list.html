@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mt-4">
+    <h2 class="header-text">Player Transfer List</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Transfer ID</th>
+                <th>Player Name</th>
+                <th>From Team</th>
+                <th>To Team</th>
+                <th>Transfer Date</th>
+                <th>Transfer Fee</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transfer in player_transfers %}
+            <tr>
+                <td>{{ transfer.TransferID }}</td>
+                <td>{{ transfer.PlayerName }}</td>
+                <td>{{ transfer.FromTeam }}</td>
+                <td>{{ transfer.ToTeam }}</td>
+                <td>{{ transfer.TransferDate }}</td>
+                <td>{{ transfer.TransferFee }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
