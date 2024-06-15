@@ -1,0 +1,5 @@
+# VS Editor files
+.vscode/
+
+# Python cache
+__pycache/
