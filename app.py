@@ -87,6 +87,56 @@ def add_player():
         return redirect(url_for('index'))
     return render_template('add_player.html')
 
+# @app.route('/delete_team/<int:id>')
+# def delete_team(id):
+#     try:
+#         # Delete related records
+#         session.execute(text("""
+#             DELETE FROM PlayerStatistics 
+#             WHERE PlayerID IN (SELECT PlayerID FROM Player WHERE TeamID = :id)
+#         """), {'id': id})
+#         session.execute(text("""
+#             DELETE FROM PlayerAgeChange 
+#             WHERE PlayerID IN (SELECT PlayerID FROM Player WHERE TeamID = :id)
+#         """), {'id': id})
+#         session.execute(text("""
+#             DELETE FROM Build 
+#             WHERE PlayerID IN (SELECT PlayerID FROM Player WHERE TeamID = :id)
+#         """), {'id': id})
+#         session.execute(text("""
+#             DELETE FROM Streamer 
+#             WHERE PlayerID IN (SELECT PlayerID FROM Player WHERE TeamID = :id)
+#         """), {'id': id})
+       
+#         session.execute(text("DELETE FROM TeamStatistics WHERE TeamID = :id"), {'id': id})
+#         session.execute(text("DELETE FROM Player WHERE TeamID = :id"), {'id': id})
+#         session.execute(text("DELETE FROM Match WHERE Team1ID = :id OR Team2ID = :id"), {'id': id})
+#         session.execute(text("DELETE FROM TeamOwner WHERE TeamID = :id"), {'id': id})
+#         session.execute(text("""
+#             DELETE FROM Schedule 
+#             WHERE MatchID IN (
+#                 SELECT MatchID FROM Match WHERE Team1ID = :id OR Team2ID = :id
+#             )
+#         """), {'id': id})
+#         session.execute(text("""
+#             DELETE FROM Schedule 
+#             WHERE MatchID IN (
+#                 SELECT MatchID FROM Match WHERE Team1ID = :id OR Team2ID = :id
+#             )
+#         """), {'id': id})
+
+#         # Delete the team
+#         team = session.query(Team).get(id)
+#         session.delete(team)
+#         session.commit()
+#         flash('Team successfully deleted.', 'success')
+#     except Exception as e:
+#         session.rollback()
+#         flash(f'Error deleting team: {e}', 'danger')
+
+#     return redirect(url_for('index'))
+
+
 @app.route('/add_tournament', methods=['GET', 'POST'])
 def add_tournament():
     if request.method == 'POST':
@@ -243,10 +293,24 @@ def edit_player(id):
 
 @app.route('/delete_player/<int:id>')
 def delete_player(id):
-    player = session.query(Player).get(id)
-    session.delete(player)
-    session.commit()
+    try:
+        # Delete related records
+        session.execute(text("DELETE FROM PlayerStatistics WHERE PlayerID = :id"), {'id': id})
+        session.execute(text("DELETE FROM PlayerAgeChange WHERE PlayerID = :id"), {'id': id})
+        session.execute(text("DELETE FROM Build WHERE PlayerID = :id"), {'id': id})
+        session.execute(text("DELETE FROM Streamer WHERE PlayerID = :id"), {'id': id})
+        
+        # Delete the player
+        player = session.query(Player).get(id)
+        session.delete(player)
+        session.commit()
+        flash('Player successfully deleted.', 'success')
+    except Exception as e:
+        session.rollback()
+        flash(f'Error deleting player: {e}', 'danger')
+
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
