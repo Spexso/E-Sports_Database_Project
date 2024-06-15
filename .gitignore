@@ -2,4 +2,4 @@
 .vscode/
 
 # Python cache
-__pycache/
+__pycache__/
